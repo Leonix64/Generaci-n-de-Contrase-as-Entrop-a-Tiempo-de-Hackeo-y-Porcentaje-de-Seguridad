@@ -20,4 +20,5 @@ Las contribuciones son bienvenidas. Si encuentras algún problema o tienes suger
 Este proyecto fue desarrollado por [Leonix64](https://github.com/Leonix64).
 
 ## Resultados
-![image](https://github.com/Leonix64/Password_Generator/assets/155585846/c98ddbb6-ae27-468d-a949-bc09faf45ad8)
+![image](https://github.com/Leonix64/Password_Generator/assets/155585846/be35d118-cb02-4ec6-8948-41c27bfcbc98)
+
