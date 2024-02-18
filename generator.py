@@ -4,7 +4,7 @@ import math
 
 def generar_password(longitud):
     """Genera una contraseña aleatoria de la longitud especificada."""
-    caracteres = string.ascii_letters + string.digits + string.punctuation
+    caracteres = string.ascii_letters + string.digits
     contraseña = ''.join(random.choice(caracteres) for _ in range(longitud))
     return contraseña
 
@@ -20,9 +20,21 @@ def obtener_longitud_password():
         except ValueError:
             print("Por favor, ingresa un número entero válido.")
 
+def obtener_cantidad_password():
+    """Obtiene la cantidad de contraseñas a generar."""
+    while True:
+        try:
+            cantidad_contraseñas = int(input("Ingresa la cantidad de contraseñas a generar: "))
+            if cantidad_contraseñas < 1:
+                print("Debe ingresar al menos una contraseña.")
+            else:
+                return cantidad_contraseñas
+        except ValueError:
+            print("Porfavor, ingresa un numero entero valido.")
+
 def calcular_entropia(longitud):
     """Calcula la entropía de una contraseña."""
-    num_caracteres = len(string.ascii_letters + string.digits + string.punctuation)
+    num_caracteres = len(string.ascii_letters + string.digits)
     return longitud * math.log2(num_caracteres)
 
 def estimar_tiempo_hackeo(entropia):
@@ -30,6 +42,15 @@ def estimar_tiempo_hackeo(entropia):
     intentos_por_segundo = 10**12  # En caso de ataque de fuerza bruta
     tiempo_segundos = 2 ** entropia / intentos_por_segundo
     return tiempo_segundos
+
+def nivel_dificultad(tiempo_hackeo):
+    """Determina el nivel de dificultad basado en el tiempo estimado de hackeo."""
+    if tiempo_hackeo <= 3600:  # Menos de una hora
+        return "Bajo"
+    elif tiempo_hackeo <= 157784630:  # Menos de 5 años
+        return "Medio"
+    else:
+        return "Alto"
 
 def convertir_tiempo(tiempo_segundos):
     """Convierte el tiempo de segundos a una forma más legible."""
@@ -51,20 +72,31 @@ def mostrar_consejos_seguridad():
     print("3. No reutilices contraseñas entre diferentes cuentas.")
     print("4. Considera el uso de un gestor de contraseñas para generar y almacenar contraseñas seguras.")
 
+def generar_multiples_contraseñas():
+    """Genera la cantidad de contraseñas y muestre sus detalles."""
+    cantidad_contraseñas = obtener_cantidad_password()
+    longitud_password = obtener_longitud_password()
+
+    print("\nGenerando {} contraseñas con longitud de {} digitos...".format(cantidad_contraseñas, longitud_password))
+
+    for i in range(cantidad_contraseñas):
+        password_generada = generar_password(longitud_password)
+        print("\nContraseña {}:".format(i+1))
+        print("Contraseña Generada:",password_generada)
+
+        entropia = calcular_entropia(longitud_password)
+        print("Entropia de la contraseña:", entropia)
+
+        tiempo_hackeo = estimar_tiempo_hackeo(entropia)
+        print("Tiempo estimado para Hackear la contraseña:", convertir_tiempo(tiempo_hackeo))
+
+        dificultad = nivel_dificultad(tiempo_hackeo)
+        print("Nivel de dificultad:", dificultad)
+
 def main():
     print("Generador de Contraseñas Seguras")
-    longitud_password = obtener_longitud_password()
-    password_generada = generar_password(longitud_password)
-    print("\nLa contraseña generada es:", password_generada)
-
-    entropia = calcular_entropia(longitud_password)
-    print("Entropía de la contraseña:", entropia)
-
-    tiempo_hackeo = estimar_tiempo_hackeo(entropia)
-    print("Tiempo estimado para hackear la contraseña:", convertir_tiempo(tiempo_hackeo))
-
+    generar_multiples_contraseñas()
     mostrar_consejos_seguridad()
 
 if __name__ == "__main__":
     main()
-
